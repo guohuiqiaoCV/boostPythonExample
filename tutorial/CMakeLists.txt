@@ -1,0 +1,30 @@
+﻿cmake_minimum_required(VERSION 3.0)
+
+set(Project hello_ext)
+
+# disable the lib prefix for shared objects
+set(CMAKE_SHARED_LIBRARY_PREFIX "")
+
+# set boost properties and link to boost
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+
+find_package(Boost REQUIRED COMPONENTS python) 
+
+if(Boost-NOTFOUND)
+  MESSAGE(FATAL_ERROR "boost.python not found!")
+endif()
+
+# set python path (use 3.4 here)
+set(Python_INCLUDE_DIRS "/usr/include/python3.4m")
+
+# set up the include path
+INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIRS}" 
+                    "${Python_INCLUDE_DIRS}" 
+                   )
+
+# add project
+ADD_LIBRARY(${Project} SHARED hello.cpp)
+
+TARGET_LINK_LIBRARIES(${Project} ${Boost_LIBRARIES})
