@@ -1,0 +1,48 @@
+build boost.python for python 3 on linux
+
+1. download the source file and uncompress it.
+
+2. config command: 
+
+   ./bootstrap.sh --prefix=/opt/Boost --with-python=/usr/bin/python3 --with-python-root=/usr
+
+3. build command:
+
+   ./b2 stage threading=multi link=shared
+
+4. install command:
+
+   sudo ./b2 install threading=multi link=shared
+
+### error met after the compilation: 
+
+    the creation of .so file was succeeded. But when import the module in python3, got the following error:
+  
+             undefined symbol: PyClass_Type
+
+    PyClass_Type is is part of the Python 2 C API and not part of the Python 3 C API. Hence, the Boost.Python library was likely built against Python 2. However, it is being loaded by a Python 3 interpreter, where the PyClass_Type is not available.
+   
+    if boost is correctly configured with python 3, you are supposed to find this in the project-config.jam file: 
+
+    using python : 3.1 : /your_python31_root ;
+
+    a note about compiling boost.python for 2.7 and 3.3: 
+
+    	$ ./bootstrap.sh --with-python=/usr/bin/python2
+	...
+	Detecting Python version... 2.7
+	$ ./b2 --with-python --buildid=2 # produces libboost_python-2.so
+	$ ./bootstrap.sh --with-python=/usr/bin/python3 --with-python-root=/usr
+	...
+	Detecting Python version... 3.3
+	$ ./b2 --with-python --buildid=3noclean # produces libboost_python-3noclean.so
+	$ ./b2 --with-python --clean
+	$ ./b2 --with-python --buildid=3 # produces libboost_python-3.so
+
+	$ nm -D stage/lib/libboost_python-2.so | grep PyClass_Type
+		         U PyClass_Type
+	$ nm -D stage/lib/libboost_python-3noclean.so | grep PyClass_Type
+		         U PyClass_Type
+	$ nm -D stage/lib/libboost_python-3.so | grep PyClass_Type
+
+	As expected, libboost_python-2.so references the PyClass_Type symbol. Additionally, the libboost_python-3noclean.so contains a reference to PyClass_Type as it was built with libboost_python-2.so's object files. With a clean build, libboost_python-3.so should not contain a reference to PyClass_Type.

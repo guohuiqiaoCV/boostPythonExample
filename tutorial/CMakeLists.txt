@@ -6,11 +6,12 @@ set(Project hello_ext)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 # set boost properties and link to boost
+set(BOOST_ROOT /opt/Boost)
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
 
-find_package(Boost REQUIRED COMPONENTS python) 
+find_package(Boost 1.60.0 REQUIRED COMPONENTS python3) 
 
 if(Boost-NOTFOUND)
   MESSAGE(FATAL_ERROR "boost.python not found!")
