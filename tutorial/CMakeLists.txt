@@ -2,6 +2,9 @@
 
 set(Project hello_ext)
 
+# support c++11
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fPIC")
+
 # disable the lib prefix for shared objects
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
