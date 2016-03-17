@@ -1,6 +1,6 @@
 # boostPythonExample
-Examples to use boost.python for extending c++ to python
-Subclass (derived class) from Qt objects are also handled here.
+Examples to use boost.python for extending c++ to python.
+Subclass (derived class) from Qt objects are tested here.
 
 Environment:
     Ubuntu Linux 14.04 (x86_64)
