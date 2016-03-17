@@ -27,5 +27,9 @@
 *.out
 *.app
 
+# user-specific settings
+CMakeUser.cmake
+
 build
 release
+.idea
